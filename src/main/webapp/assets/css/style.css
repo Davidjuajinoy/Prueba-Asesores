@@ -62,6 +62,21 @@ body{
 
 
 /* ? Custom Btn, text ,box shadow */
+
+/* show-users select */
+.select-custom:disabled {
+  background: none !important;
+  color: #fff ; 
+  opacity: 1 ;
+  border : none ;
+  appearance:none;
+  user-select: all;
+  text-align: left;
+  margin-left: -12px;
+  margin-top: -4px;
+  margin-bottom: -8px;
+  
+}
 .close{
     outline: none !important;
     color :#fff;

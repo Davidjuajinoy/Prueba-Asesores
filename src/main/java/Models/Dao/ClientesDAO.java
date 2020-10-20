@@ -91,7 +91,7 @@ public class ClientesDAO {
             ps.setInt(7, cliente.getCliente_id());
             ps.executeUpdate();
             msg="[{\"ok\":\"actualizado\"}]";
-            
+            conn.disconnect();
 
         } catch (SQLException e) {
             System.out.println("Error updateCliente['ClientesDao']" + e.getMessage());

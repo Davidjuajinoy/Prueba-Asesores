@@ -17,10 +17,10 @@
         </div>    
         <div class="menu_option text-white list-unstyled">
             <li class="nav-item  ">
-                <a class="nav-link text-white" href="#">Administrar Asesores</a>
+                <a class="nav-link text-white" href="${pageContext.request.contextPath}/asesores">Administrar Asesores</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white" href="#">Administrar Clientes</a>
+                <a class="nav-link text-white" href="${pageContext.request.contextPath}/clientes">Administrar Clientes</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white" href="#">Administrar Citas</a>

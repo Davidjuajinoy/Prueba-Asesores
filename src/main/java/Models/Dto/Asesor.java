@@ -9,7 +9,7 @@ public class Asesor {
     private int ase_id;
     private String ase_nombre;
     private String ase_numero_documento;
-    private String ase_experiencia;
+    private float ase_experiencia;
     private String ase_especialidad;
     private String ase_hora_inicio;
     private String ase_hora_fin;
@@ -21,7 +21,14 @@ public class Asesor {
         
     }
 
-    public Asesor(int ase_id, String ase_nombre, String ase_numero_documento, String ase_experiencia, String ase_especialidad, String ase_hora_inicio, String ase_hora_fin, int fk_ase_tipo_documento) {
+    public Asesor(int ase_id) {
+        this.ase_id = ase_id;
+    }
+    
+    
+    
+
+    public Asesor(int ase_id, String ase_nombre, String ase_numero_documento, float ase_experiencia, String ase_especialidad, String ase_hora_inicio, String ase_hora_fin, int fk_ase_tipo_documento) {
         this.ase_id = ase_id;
         this.ase_nombre = ase_nombre;
         this.ase_numero_documento = ase_numero_documento;
@@ -58,11 +65,11 @@ public class Asesor {
         this.ase_numero_documento = ase_numero_documento;
     }
 
-    public String getAse_experiencia() {
+    public float getAse_experiencia() {
         return ase_experiencia;
     }
 
-    public void setAse_experiencia(String ase_experiencia) {
+    public void setAse_experiencia(float ase_experiencia) {
         this.ase_experiencia = ase_experiencia;
     }
 

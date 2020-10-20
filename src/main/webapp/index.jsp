@@ -12,7 +12,7 @@
         <div class="container  vh-100">
             <div class="row  h-100 d-flex justify-content-center align-items-center ">
                 <div class="col-4">
-                    <a href="asesores.html"  class="text-decoration-none ">
+                    <a href="${pageContext.request.contextPath}/asesores"  class="text-decoration-none ">
                         <div class="card bg-custom-two hover">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h5 class="card-title text-shadow-custom text-white font-weight-bold">Asesores</h5>

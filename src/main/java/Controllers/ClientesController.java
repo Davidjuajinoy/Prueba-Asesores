@@ -90,7 +90,11 @@ public class ClientesController extends HttpServlet {
         TipoDocumentoDAO documento = new TipoDocumentoDAO();
         List<TipoDocumento> listaDocumentos = documento.showAll();
 
+        String title = "Clientes";
+        String[] table = {"Nombres","Documento","Ciudad","Pais"};
         // Datos Enviados
+        request.setAttribute("title", title);
+        request.setAttribute("table", table);
         request.setAttribute("listaPais", listaPais);
         request.setAttribute("listaCiudad", listaCiudad);
         request.setAttribute("listaDocumento", listaDocumentos);

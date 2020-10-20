@@ -16,10 +16,10 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>#</th>
-                        <th>Nombres</th>
-                        <th>Documento</th>
-                        <th>Ciudad</th>
-                        <th>Pais</th>
+                        <th>${table[0]}</th>
+                        <th>${table[1]}</th>
+                        <th>${table[2]}</th>
+                        <th>${table[3]}</th>
                         <th>Opciones</th>
                         <th class=""> <span class="d-flex justify-content-center align-content-center"> <i  data-toggle="modal" data-target="#ModalAdd" class="create-svg "></i> </span></th>
                     </tr>
