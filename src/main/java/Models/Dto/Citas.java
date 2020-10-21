@@ -1,5 +1,6 @@
 package Models.Dto;
 
+
 /**
  *
  * @author David Juajinoy
@@ -15,10 +16,26 @@ public class Citas {
     private int fk_clientes;
     private int fk_estado;
     
+    //inner join 
+    private String fk_ase_nombre;
+    private String fk_ase_hora_inicio;
+    private String fk_ase_hora_fin;
+    private String fk_cli_nombres;
+    private String fk_cli_apellidos;
+    private String fk_estado_cita;
+
+    
+    
     public Citas()
     {
         
     }
+
+    public Citas(int id_citas) {
+        this.id_citas = id_citas;
+    }
+    
+    
 
     public Citas(int id_citas, String descripcion, String fecha, String hora_inicio, String hora_final, int fk_asesores, int fk_clientes, int fk_estado) {
         this.id_citas = id_citas;
@@ -30,6 +47,25 @@ public class Citas {
         this.fk_clientes = fk_clientes;
         this.fk_estado = fk_estado;
     }
+
+    public Citas(int id_citas, String descripcion, String fecha, String hora_inicio, String hora_final, int fk_asesores, int fk_clientes, int fk_estado, String fk_ase_nombre, String fk_ase_hora_inicio, String fk_ase_hora_fin, String fk_cli_nombres, String fk_cli_apellidos, String fk_estado_cita) {
+        this.id_citas = id_citas;
+        this.descripcion = descripcion;
+        this.fecha = fecha;
+        this.hora_inicio = hora_inicio;
+        this.hora_final = hora_final;
+        this.fk_asesores = fk_asesores;
+        this.fk_clientes = fk_clientes;
+        this.fk_estado = fk_estado;
+        this.fk_ase_nombre = fk_ase_nombre;
+        this.fk_ase_hora_inicio = fk_ase_hora_inicio;
+        this.fk_ase_hora_fin = fk_ase_hora_fin;
+        this.fk_cli_nombres = fk_cli_nombres;
+        this.fk_cli_apellidos = fk_cli_apellidos;
+        this.fk_estado_cita = fk_estado_cita;
+    }
+    
+    
 
  
 

@@ -197,7 +197,7 @@ console.log(location.pathname);
     
     
     
-
+//Modulo Clientes
 
 if (location.pathname == '/PruebaAsesores/clientes')
 
@@ -665,6 +665,7 @@ if (location.pathname == '/PruebaAsesores/clientes')
     }
 
 }
+
 
 //Modulo Asesores
 
@@ -1145,4 +1146,472 @@ if (location.pathname == '/PruebaAsesores/asesores')
 
 }
 
+
+
+//Modulo Citas
+
+if (location.pathname == '/PruebaAsesores/citas')
+
+{
+    //? Guarda todos los datos de la tabla Asesores (DB) 
+    let AllDatos = [];
+    
+    //? Selecciona el tr de la tabla donde se mostraran los campos (id,asesores,etc);
+    const thBody = document.getElementById('tablaAll');
+
+    //? Obtener ID y ejecutar Modales mostrando datos dependiendo de la id para show,edit y delete
+    thBody.addEventListener('click', (e) => {
+
+        const id = e.target;
+        if (id.getAttribute('id'))
+        {
+            const datosId = id.getAttribute('id');
+            // buscar el id que coincida con el id obtenido del evento
+            const datosFilter = AllDatos.filter(cita => cita.id_citas == datosId)[0];
+
+            if (id.getAttribute('data-target') == '#ModalUpdate')
+            {
+                UpdateCliente(datosFilter);
+            } else if (id.getAttribute('data-target') == '#ModalShow') {
+                showCliente(datosFilter);
+            } else if (id.getAttribute('data-target') == '#ModalDelete')
+            {
+                const message = `${datosFilter.descripcion} Del Asesor ${datosFilter.fk_ase_nombre}`
+                msgQuestion(message, datosFilter.id_citas);
+            }
+
+
+        }
+
+
+    })
+
+
+    //? creacion de tr y td de la tabla tablaAll 
+    const createAllUsersTable = (datos, count) => {
+        const fragment = document.createDocumentFragment();
+
+        const trTableAll = document.createElement('TR');
+        trTableAll.classList.add('table-light');
+
+        const tdTableAll = document.createElement('TD');
+        tdTableAll.setAttribute('colspan', '1');
+
+        tdTableAll.textContent = `${count}`;
+
+        trTableAll.append(tdTableAll);
+
+        const td2TableAll = document.createElement('TD');
+        td2TableAll.setAttribute('colspan', '1');
+        td2TableAll.textContent = `${datos.fecha}`;
+
+        trTableAll.append(td2TableAll);
+      
+        const td4TableAll = document.createElement('TD');
+        td4TableAll.classList.add('text-capitalize');
+
+        td4TableAll.textContent = `${datos.fk_ase_nombre}`;
+
+        trTableAll.append(td4TableAll);
+
+
+        const td5TableAll = document.createElement('TD');
+        td5TableAll.classList.add('text-capitalize');
+        td5TableAll.textContent = `${datos.fk_cli_nombres} ${datos.fk_cli_apellidos}`;
+
+        trTableAll.append(td5TableAll);
+
+        const td6TableAll = document.createElement('TD');
+        td6TableAll.classList.add('text-capitalize');
+        td6TableAll.textContent = `${datos.fk_estado_cita}`;
+
+        trTableAll.append(td6TableAll);
+
+
+
+        const td9TableAll = document.createElement('TD');
+        td9TableAll.classList.add('i-separated');
+
+
+        let iTd9 = document.createElement('I');
+        iTd9.id = `${datos.id_citas}`;
+        iTd9.setAttribute('data-toggle', 'modal');
+        iTd9.setAttribute('data-target', '#ModalShow');
+        iTd9.classList.add('show-svg');
+        td9TableAll.append(iTd9);
+        
+
+
+        let iATd9 = document.createElement('I');
+        iATd9.id = `${datos.id_citas}`;
+        iATd9.classList.add('edit-svg');
+        iATd9.setAttribute('data-toggle', 'modal');
+        iATd9.setAttribute('data-target', '#ModalUpdate');
+
+        td9TableAll.append(iATd9);
+
+
+
+        let i2Td9 = document.createElement('I');
+        i2Td9.id = `${datos.id_citas}`;
+        i2Td9.classList.add('delete-svg');
+        i2Td9.setAttribute('data-toggle', 'modal');
+        i2Td9.setAttribute('data-target', '#ModalDelete');
+
+        td9TableAll.append(i2Td9);
+
+        trTableAll.append(td9TableAll);
+
+
+        fragment.append(trTableAll);
+        return fragment;
+
+    }
+
+
+    //? Paginacion  prev - next
+
+    liMostrar.addEventListener('click', function (e)
+    {
+
+        if (e.target.localName == 'button')
+        {
+            if (e.target.textContent != 'Siguiente' && e.target.textContent != 'Anterior')
+            {
+                let numero = e.target.textContent;
+                pagina.pagina = (Number(numero));
+                TableAndpagination(pagina.pagina, pagina.usuariosFila, AllDatos, renderizarHtml);
+            } else if (e.target.textContent == 'Siguiente')
+            {
+                let page = Math.ceil(AllDatos.length / pagina.usuariosFila);
+
+                if (pagina.pagina < page)
+                {
+                    pagina.pagina += 1;
+                    TableAndpagination(pagina.pagina, pagina.usuariosFila, AllDatos, renderizarHtml);
+                }
+
+
+            } else if (e.target.textContent == 'Anterior' && pagina.pagina > 1)
+            {
+                pagina.pagina -= 1;
+                TableAndpagination(pagina.pagina, pagina.usuariosFila, AllDatos, renderizarHtml);
+            }
+
+        }
+
+    })
+
+
+
+    // retorna el fragmento con todo el codigo de TR>TD de TableAll
+    const renderizarHtml = (datos) => {
+        const fragment = document.createDocumentFragment();
+        let count = 0;
+        for (const user of datos) {
+            count++;
+            fragment.append(createAllUsersTable(user, count));
+        }
+        thBody.innerHTML = '';
+        thBody.append(fragment);
+    }
+
+    //Buscador Por indexOf
+    const searchName = document.getElementById('buscador');
+    searchName.addEventListener('input', function ()
+    {
+        let value = searchName.value.toLowerCase();
+        
+       
+
+        if (value.trim() != '')
+        {
+            for (const name of AllDatos) {
+                let nombre = `${name.fk_ase_nombre}`;
+                let documento = `${name.estado}`;
+                
+                if (nombre.indexOf(value) != -1 || documento.indexOf(value) != -1)
+                {
+         
+                    thBody.innerHTML = '';
+                    thBody.appendChild(createAllUsersTable(name, 1));
+                }
+
+            }
+
+        }
+
+        if (value.trim() == '')
+        {
+            TableAndpagination(pagina.pagina, pagina.usuariosFila, AllDatos, renderizarHtml);
+        }
+
+    })
+
+
+
+
+    //? Peticion Ajax de SELECT * FROM  de DB 
+    const showAllDatos = () => {
+
+        fetch(`citas?method=showAll`)
+                .then(resp => resp.ok ? Promise.resolve(resp) : Promise.reject(new Error('Fallos la consulta')))
+                .then(response => response.json())
+                .then(data => {
+                    //? se guardar los datos en el array (esto es para detalles y actualizar)
+                    AllDatos = data;                 
+                    TableAndpagination(pagina.pagina, pagina.usuariosFila, data, renderizarHtml);
+                })
+                .catch(error => console.log(error));
+    }
+    
+    showAllDatos();
+    
+    
+//    
+    //? funcion para mostrar los campos en el #ModalUpdate 
+    const UpdateCliente= (user) => {
+        
+        const update_id = document.getElementById("update_id").value=`${user.id_citas}`;
+        const update_fk_cliente = document.getElementById("update_fk_cliente").value=`${user.fk_clientes}`;
+        const update_fecha = document.getElementById("update_fecha").value=`${user.fecha}`;
+        const update_estado = document.getElementById("update_estado").value=`${user.fk_estado}`;
+        const update_fk_asesor = document.getElementById("update_fk_asesor").value=`${user.fk_asesores}`;
+        const update_hora_inicio = document.getElementById("update_hora_inicio").value=`${user.hora_inicio}`;
+        const update_hora_fin = document.getElementById("update_hora_fin").value=`${user.hora_final}`;
+        const update_descripcion = document.getElementById("update_descripcion").value=`${user.descripcion}`;
+    }
+    
+    //? funcion para mostrar los campos en el #ModalShow 
+    const showCliente = (user)=>{
+        
+        const show_cliente = document.getElementById("show_cliente").textContent=`${user.fk_cli_nombres} ${user.fk_cli_apellidos}`;
+        const show_fecha = document.getElementById("show_fecha").textContent=`${user.fecha}`;
+        const show_estado = document.getElementById("show_estado").textContent=`${user.fk_estado_cita}`;
+        const show_asesor = document.getElementById("show_asesor").textContent=`${user.fk_ase_nombre}`;
+        const show_hora_inicio = document.getElementById("show_hora_inicio").textContent=`${user.hora_inicio}`;
+        const show_hora_fin = document.getElementById("show_hora_fin").textContent=`${user.hora_final}`;
+        const show_descripcion = document.getElementById("show_descripcion").textContent=`${user.descripcion}`;
+    }
+//    
+
+
+
+
+     const validarFormUsers = (paramDescripcion,paramFecha,paramEstado,paramHoraInicio,paramHoraFinal,paramFkAsesor,paramFkCliente) =>
+     {
+         // tiene que ser parametro id "#ejemplo"
+         if(paramDescripcion.value == ""){
+             paramDescripcion.focus();
+             const message = "Ingresar Descripcion De La Cita";
+             msgError(message);
+         }
+        else if(paramFecha.value == ""){
+             paramFecha.focus();
+             const message = "Ingresar Fecha de la Cita";
+             msgError(message);
+         }
+        else if(paramEstado.value == ""){
+            paramEstado.focus();     
+            const message = "Seleccionar Estado de la Cita";
+            msgError(message);
+        }
+         else if(paramHoraInicio.value == ""){
+            paramHoraInicio.focus();     
+            const message = "Seleccionar la hora inicial";
+            msgError(message);
+        }
+         else if(paramHoraFinal.value == ""){
+            paramHoraFinal.focus();     
+            const message = "Seleccionar la hora final";
+            msgError(message);
+        }
+        else if(paramFkAsesor.value == ""){
+             paramFkAsesor.focus();    
+             const message = "Seleccionar el Asesor";
+             msgError(message);
+        }
+         else if(paramFkCliente.value == ""){
+            paramFkCliente.focus();     
+            const message = "Ingresar el Cliente";
+            msgError(message);
+        }
+        else{
+             return true;
+         }
+     };
+//    
+    //? funcion para guardar el Asesor #ModalAdd
+    const btnSubmitFormAdd = document.getElementById('GuardarModalAdd');
+    btnSubmitFormAdd.addEventListener('click',(e)=>{
+        e.preventDefault();
+        const descripcion = document.getElementById("descripcion");
+        const fecha = document.getElementById("fecha");
+        const estado = document.getElementById("estado");
+        const hora_inicio = document.getElementById("hora_inicio");
+        const hora_fin = document.getElementById("hora_fin");
+        const fk_asesor = document.getElementById("fk_asesor");
+        const fk_cliente = document.getElementById("fk_cliente");
+
+        
+         const validarForm = validarFormUsers(descripcion,fecha,estado,hora_inicio,hora_fin,fk_asesor,fk_cliente);
+
+         if(validarForm == true )
+         {   
+                const formData = new FormData();
+                formData.append('descripcion',descripcion.value.toLowerCase());
+                formData.append('fecha',fecha.value);
+                formData.append('estado',estado.value);
+                formData.append('hora_inicio',hora_inicio.value);
+                formData.append('hora_fin',hora_fin.value);
+                formData.append('fk_asesor',fk_asesor.value);
+                formData.append('fk_cliente',fk_cliente.value);
+                
+                      
+                fetch('citas?method=create' , 
+                {
+                    method : 'POST',
+                    body : formData
+
+                })
+                .then(resp => (resp.ok) ? Promise.resolve(resp) : Promise.reject(new Error('fallo la insercion')))
+                .then(resp => resp.json())
+                .then((data)=>{
+                     
+                    if(data[0]['error'])
+                    {
+                        correo.focus();
+                        const msg ='Fallo la creacion del Cliente';
+                        msgError(msg);
+                    }          
+                    else if(data[0]['ok']){
+
+                        $("#ModalAdd").modal('hide');
+                        let message = 'Asesor Agregado Correctamente';
+                        // se llama la funcion de !=error
+                        msgSuccess(message);
+                        // se llama a la funcion de mostrar usuarios html
+                        showAllDatos();
+                    //  se reinician los  valores de los input solicitados 
+                        resetValueFormModalAdd();
+                    }
+
+                }).catch(error => console.log(error));
+            }
+        
+    })
+    
+    //? funcion para actualizar el Cliente #ModalUpdate
+    const btnSubmitFormUpdate = document.getElementById('GuardarModalUpdate');
+    btnSubmitFormUpdate.addEventListener('click',(e)=>{
+        e.preventDefault();
+        const update_id = document.getElementById("update_id");
+        const update_descripcion = document.getElementById("update_descripcion");
+        const update_fecha = document.getElementById("update_fecha");
+        const update_estado = document.getElementById("update_estado");
+        const update_hora_inicio = document.getElementById("update_hora_inicio");
+        const update_hora_fin = document.getElementById("update_hora_fin");
+        const update_fk_asesor = document.getElementById("update_fk_asesor");
+        const update_fk_cliente = document.getElementById("update_fk_cliente");
+
+        const validarForm = validarFormUsers(update_descripcion,update_fecha,update_estado,update_hora_inicio,update_hora_fin,update_fk_asesor,update_fk_cliente);
+
+
+
+         if(validarForm == true )
+         {   
+                const formData = new FormData();
+                formData.append('update_id',update_id.value);
+                formData.append('update_descripcion',update_descripcion.value);
+                formData.append('update_fecha',update_fecha.value);
+                formData.append('update_estado',update_estado.value);
+                formData.append('update_hora_inicio',update_hora_inicio.value);
+                formData.append('update_hora_fin',update_hora_fin.value);
+                formData.append('update_fk_asesor',update_fk_asesor.value);
+                formData.append('update_fk_cliente',update_fk_cliente.value);
+                
+                      
+                fetch('citas?method=update' , 
+                {
+                    method : 'POST',
+                    body : formData
+
+                })
+                .then(resp => (resp.ok) ? Promise.resolve(resp) : Promise.reject(new Error('fallo la insercion')))
+                .then(resp => resp.json())
+                .then((data)=>{
+                     
+                    if(data[0]['error'])
+                    {
+                        
+                        const msg ='Fallo la Actualizacion del Cliente';
+                        msgError(msg);
+                    }          
+                    else if(data[0]['ok']){
+
+                        $("#ModalUpdate").modal('hide');
+                        let message = 'Usuario Actualizado Correctamente';
+                        // se llama la funcion de !=error
+                        msgSuccess(message);
+                        // se llama a la funcion de mostrar usuarios html
+                        showAllDatos();
+  
+                    }
+
+                }).catch(error => console.log(error));
+            }
+        
+    })
+//    
+        //reset input modalAdd
+        const resetValueFormModalAdd= () =>{
+     
+            const descripcion = document.getElementById("descripcion").value="";
+            const fecha = document.getElementById("fecha").value="";
+            const estado = document.getElementById("estado").value="";
+            const hora_inicio = document.getElementById("hora_inicio").value="";
+            const hora_fin = document.getElementById("hora_fin").value="";
+            const fk_asesor = document.getElementById("fk_asesor").value="";
+            const fk_cliente = document.getElementById("fk_cliente").value="";
+        
+ 
+        }
+//    
+//    
+//    
+      //? funcion De Mensaje modal y callback de eliminar(deleteUser(id));
+    const msgQuestion = (message, id) => {
+        Swal.fire({
+            icon: 'warning',
+            html: `<p class="text-white h4 mb-3 text-capitalize">Desea borrar la cita</p><p class="text-danger text-capitalize h6">${message}</p>`,
+            focusConfirm:true,
+            background : '#343a40',
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#6C63FF',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            cancelButtonColor: '#6C63FF'
+            }).then((result) => {
+            if (result.value) {
+                const msg = "La Cita ha sido eliminado";
+                msgSuccess(msg);
+                destroyCliente(id);
+    
+            };
+        })
+    }
+
+    //? peticion para eliminar asesor mediante id
+    const destroyCliente = (id) =>{
+        fetch(`citas?method=destroy&delete_id=${id}`,{
+        }).then( resp =>  (resp.ok) ? Promise.resolve(resp) : Promise.reject(new Error('fallo el delete')))
+        .then( resp => resp.text())
+        .then((data) =>{
+            // se actualiza la tabla
+            showAllDatos();
+        })
+    
+    }
+
+}
 

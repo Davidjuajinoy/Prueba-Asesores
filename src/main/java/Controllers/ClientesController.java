@@ -91,9 +91,11 @@ public class ClientesController extends HttpServlet {
         List<TipoDocumento> listaDocumentos = documento.showAll();
 
         String title = "Clientes";
+        String imgSidebar = "clientes1.svg";
         String[] table = {"Nombres","Documento","Ciudad","Pais"};
         // Datos Enviados
         request.setAttribute("title", title);
+        request.setAttribute("imgSidebar", imgSidebar);
         request.setAttribute("table", table);
         request.setAttribute("listaPais", listaPais);
         request.setAttribute("listaCiudad", listaCiudad);

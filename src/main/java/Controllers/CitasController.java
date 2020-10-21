@@ -1,8 +1,19 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Controllers;
 
 import Models.Dao.AsesorDAO;
+import Models.Dao.CitasDAO;
+import Models.Dao.ClientesDAO;
+import Models.Dao.EstadoDAO;
 import Models.Dao.TipoDocumentoDAO;
 import Models.Dto.Asesor;
+import Models.Dto.Citas;
+import Models.Dto.Cliente;
+import Models.Dto.EstadoCita;
 import Models.Dto.TipoDocumento;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -19,24 +30,15 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author David Juajinoy
  */
-
 @MultipartConfig
-@WebServlet(name = "AsesoresController", urlPatterns = {"/asesores"})
-public class AsesoresController extends HttpServlet {
+@WebServlet(name = "CitasController", urlPatterns = {"/citas"})
+public class CitasController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         String method = request.getParameter("method");
         if (method != null) {
             switch (method) {
@@ -44,7 +46,7 @@ public class AsesoresController extends HttpServlet {
                     this.showAll(request, response);
                     break;
                 case "destroy":
-                    this.deleteAsesor(request, response);
+                    this.deleteCita(request, response);
                     break;
                 default:
                     this.methodDefault(request, response);
@@ -52,28 +54,40 @@ public class AsesoresController extends HttpServlet {
         } else {
             this.methodDefault(request, response);
         }
-
-
     }
-    
     
     protected void methodDefault(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         // Datos TipoDocumento
         TipoDocumentoDAO documento = new TipoDocumentoDAO();
         List<TipoDocumento> listaDocumentos = documento.showAll();
         
-        String title = "Asesores";
-        String imgSidebar = "asesores1.svg";
-        String[] table = {"Nombres", "Documento", "Hora De Inicio", "Hora Final"};
         
+        // Datos Cliente
+        ClientesDAO clienteDao = new ClientesDAO();
+        List<Cliente> listaCliente = clienteDao.showAllClientes();
+
+        // Datos Asesor
+        AsesorDAO asesorDao = new AsesorDAO();
+        List<Asesor> listaAsesor = asesorDao.showAllAsesores();
+        
+        // Datos Estado Cita
+        EstadoDAO estadoDao = new EstadoDAO();
+        List<EstadoCita> listaEstado = estadoDao.showAllEstado();
+     
+        String title = "Citas";
+        String imgSidebar = "cita1.svg";
+        String[] table = {"Fecha","Asesor","Cliente","Estado"};
+//        
         request.setAttribute("title", title);
         request.setAttribute("imgSidebar", imgSidebar);
         request.setAttribute("table", table);
         request.setAttribute("listaDocumento", listaDocumentos);
-        
-        request.getRequestDispatcher("/WEB-INF/asesores.jsp").forward(request, response);
+        request.setAttribute("listaCliente", listaCliente);
+        request.setAttribute("listaAsesor", listaAsesor);
+        request.setAttribute("listaEstado", listaEstado);
+//        
+        request.getRequestDispatcher("/WEB-INF/citas.jsp").forward(request, response);
       
       
     }
@@ -82,10 +96,12 @@ public class AsesoresController extends HttpServlet {
     private void showAll(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        AsesorDAO asesor = new AsesorDAO();
-        List<Asesor> listaAsesores = asesor.showAllAsesores();
+//         Datos Citas
+        CitasDAO citasDao = new CitasDAO();
+        List<Citas> listaCita = citasDao.showAllCitas();
 
-        String json = new Gson().toJson(listaAsesores);
+        String json = new Gson().toJson(listaCita);
+        
          
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -94,14 +110,14 @@ public class AsesoresController extends HttpServlet {
 
     }
     
-    private void deleteAsesor(HttpServletRequest request, HttpServletResponse response)
+    private void deleteCita(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
             int id = Integer.parseInt(request.getParameter("delete_id"));
-            Asesor asesor = new Asesor(id);
+            Citas cita = new Citas(id);
 
-            AsesorDAO asesorDao = new AsesorDAO();
-            String eliminado = asesorDao.destroyAsesor(asesor);
+            CitasDAO citaDao = new CitasDAO();
+            String eliminado = citaDao.destroyCita(cita);
 
             response.setContentType("text/html;charset=UTF-8");
             try (PrintWriter out = response.getWriter()) {
@@ -110,8 +126,7 @@ public class AsesoresController extends HttpServlet {
      
 
     }  
-
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -120,10 +135,10 @@ public class AsesoresController extends HttpServlet {
         if (method != null) {
             switch (method) {
                 case "create":
-                    this.createAsesor(request, response);
+                    this.createCita(request, response);
                     break;
                 case "update":
-                    this.updateAsesor(request, response);
+                    this.updateCita(request, response);
                     break;              
                 default:
                     this.methodDefault(request, response);
@@ -133,24 +148,23 @@ public class AsesoresController extends HttpServlet {
         }
     }
     
-    
-    private void createAsesor(HttpServletRequest request, HttpServletResponse response)
+    private void createCita(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
      
-            String nombres = request.getParameter("nombres");
-            String numero_documento = request.getParameter("numero_documento");
-            float experiencia = Float.parseFloat(request.getParameter("experiencia"));
-            System.out.println(request.getParameter("experiencia"+" "+ experiencia));
+      
+            String descripcion = request.getParameter("descripcion");
+            String fecha = request.getParameter("fecha");
+            int estado = Integer.parseInt(request.getParameter("estado"));
             String hora_inicio = request.getParameter("hora_inicio");
             String hora_fin = request.getParameter("hora_fin");
-            int tipo_documento = Integer.parseInt(request.getParameter("tipo_documento"));
-            String especialidad = request.getParameter("especialidad");
+            int fk_asesor = Integer.parseInt(request.getParameter("fk_asesor"));
+            int fk_cliente =Integer.parseInt(request.getParameter("fk_cliente"));
             
   
-            Asesor asesor = new Asesor(0, nombres, numero_documento, experiencia, especialidad, hora_inicio, hora_fin, tipo_documento);
+            Citas cita = new Citas(0, descripcion, fecha, hora_inicio, hora_fin, fk_asesor, fk_cliente, estado);
             
-            AsesorDAO asesorDao  =new AsesorDAO();
-            String insertado = asesorDao.storedAsesor(asesor);
+            CitasDAO citasDao  =new CitasDAO();
+            String insertado = citasDao.storedCita(cita);
 
             response.setContentType("text/html;charset=UTF-8");
             try (PrintWriter out = response.getWriter()) {
@@ -161,24 +175,24 @@ public class AsesoresController extends HttpServlet {
     }
     
     
-    private void updateAsesor(HttpServletRequest request, HttpServletResponse response)
+    private void updateCita(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
      
             int update_id = Integer.parseInt(request.getParameter("update_id"));
-            String update_nombres = request.getParameter("update_nombres");
-            String update_numero_documento = request.getParameter("update_numero_documento");
-            float update_experiencia = Float.parseFloat(request.getParameter("update_experiencia"));
+            String update_descripcion = request.getParameter("update_descripcion");
+            String update_fecha = request.getParameter("update_fecha");
+            int update_estado = Integer.parseInt(request.getParameter("update_estado"));
             String update_hora_inicio = request.getParameter("update_hora_inicio");
             String update_hora_fin = request.getParameter("update_hora_fin");
-            int update_tipo_documento = Integer.parseInt(request.getParameter("update_tipo_documento"));
-            String update_especialidad = request.getParameter("update_especialidad");
+            int update_fk_asesor = Integer.parseInt(request.getParameter("update_fk_asesor"));
+            int update_fk_cliente = Integer.parseInt(request.getParameter("update_fk_cliente"));
 
 
-            Asesor asesor = new Asesor(update_id, update_nombres, update_numero_documento, update_experiencia, update_especialidad, update_hora_inicio, update_hora_fin, update_tipo_documento);
+            Citas cita= new Citas(update_id, update_descripcion, update_fecha, update_hora_inicio, update_hora_fin, update_fk_asesor, update_fk_cliente, update_estado);
 
-            AsesorDAO asesorDao = new AsesorDAO();
-            String actualizado = asesorDao.updateAsesor(asesor);
+            CitasDAO citasDao = new CitasDAO();
+            String actualizado = citasDao.updateCita(cita);
         
             response.setContentType("text/html;charset=UTF-8");
             try (PrintWriter out = response.getWriter()) {
@@ -187,10 +201,7 @@ public class AsesoresController extends HttpServlet {
      
 
     }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+    
+    
 
 }

@@ -36,7 +36,7 @@
             </div>
 
             <div class="col-4">
-                <a href="citas.html"  class="text-decoration-none ">
+                <a href="${pageContext.request.contextPath}/citas"  class="text-decoration-none ">
                     <div class="card bg-custom-two hover">
                         <div class="card-body d-flex flex-column justify-content-center align-items-center">
                             <h5 class="card-title text-shadow-custom text-white font-weight-bold">Citas</h5>
