@@ -38,7 +38,7 @@
 
                         <div class="form-group col-12">
                             <label for="nombres" class="text-shadow-1 text-custom text-capitalize">Nombres</label>
-                            <input type="text" tabindex="1" class="form-control bg-white input-custom" name="nombres" placeholder="pepito" id="nombres">
+                            <input type="text" tabindex="1" class="form-control bg-white input-custom text-capitalize" name="nombres" placeholder="pepito" id="nombres">
                         </div>
 
                      
@@ -237,7 +237,7 @@
 
               <div class="form-group col-12">
                   <label for="update_nombres" class="text-shadow-1 text-custom text-capitalize">Nombres</label>
-                  <input type="text" tabindex="1" class="form-control bg-white input-custom" name="update_nombres" placeholder="pepito" id="update_nombres">
+                  <input type="text" tabindex="1" class="form-control bg-white input-custom text-capitalize" name="update_nombres" placeholder="pepito" id="update_nombres">
               </div>
 
            

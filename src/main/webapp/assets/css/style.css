@@ -11,10 +11,40 @@ body{
 /* ? Sidebar */
 
 .img_dashboard{
-    height: 120px;
-    width: 120px;
+    height: 180px;
+    width: 170px;
 }
 
+.nav_hover{
+    transition:transform 1s;
+}
+
+.nav_hover:hover{
+    transform: translateX(10%);
+    transition: transform 0.7s;
+}
+
+.button--fill{
+    position: relative;
+    transition: color 0.4s;
+}
+.button--fill::before{
+  content: "";
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #21222C;
+  transform: translateX(-100%);
+  z-index: -1;
+  transition: transform .7s;
+}
+
+.button--fill:hover::before{
+  transform:  translateX(0);
+}
 
 #sidebar {
     width: 17%;

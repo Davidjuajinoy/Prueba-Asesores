@@ -13,8 +13,6 @@ const cardHover= document.querySelectorAll('.hover').forEach(hover => {
 }
 
 
-
-
 if(location.pathname != "/PruebaAsesores/")
 {
     /*? Sidebar */
@@ -27,8 +25,8 @@ btnSidebar.addEventListener('click',()=>{
     bodyContent.classList.toggle('active');
 })
 
-/*? End Sidebar */
 
+/*? End Sidebar */
 }
 
 
@@ -92,7 +90,7 @@ const liMostrar =document.getElementById('pagination');
 // Objeto Guarda la pag
 let pagina = {
     pagina: 1,
-    usuariosFila : 6,
+    usuariosFila : 7,
     btnFila : 3
 }
 
@@ -1328,10 +1326,11 @@ if (location.pathname == '/PruebaAsesores/citas')
         {
             for (const name of AllDatos) {
                 let nombre = `${name.fk_ase_nombre}`;
-                let documento = `${name.estado}`;
+    
                 
-                if (nombre.indexOf(value) != -1 || documento.indexOf(value) != -1)
+                if (nombre.indexOf(value) != -1)
                 {
+                    console.log(name);
          
                     thBody.innerHTML = '';
                     thBody.appendChild(createAllUsersTable(name, 1));

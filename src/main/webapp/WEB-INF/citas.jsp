@@ -4,14 +4,13 @@
     Author     : David Juajinoy
 --%>
 
+<%@page import="java.time.LocalDate"%>
+
 <%--<%@page import="java.time.LocalDate"%>--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:include page="layout/header.jsp"/>
-
-
-
 <jsp:include page="layout/Sidebar.jsp"></jsp:include>
 
 
@@ -49,7 +48,7 @@
                         <div class="col-7">
                             <div class="form-group">
                                 <label for="fecha" class="text-shadow-1 text-custom">fecha de la cita</label>
-                                <input type="date" tabindex="3" class="form-control input-custom" name="fecha" id="fecha">
+                                <input type="date" tabindex="3" class="form-control input-custom" name="fecha" min="<%= LocalDate.now().plusDays(1) %>" id="fecha">
                             </div>
                         </div>
 
@@ -256,7 +255,7 @@
                 <div class="col-7">
                     <div class="form-group">
                         <label for="update_fecha" class="text-shadow-1 text-custom">fecha de la cita</label>
-                        <input type="date" tabindex="3" class="form-control input-custom" name="update_fecha" id="update_fecha">
+                        <input type="date" tabindex="3" class="form-control input-custom" name="update_fecha" min="<%= LocalDate.now().plusDays(1) %>" id="update_fecha">
                     </div>
                 </div>
 

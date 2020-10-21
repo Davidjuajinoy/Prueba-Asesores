@@ -11,19 +11,19 @@
     <!--  ! Sidebar  -->
 
     <div class="bg-custom " id="sidebar">
-        <p class="diplay-6  text-white my-3 px-2 size-sm text-center text-capitalize">Menu </p>
+        <p class="diplay-6 text-shadow-custom  text-white my-3 px-2 font-weight-bold text-center text-capitalize">${title} </p>
         <div class="d-flex flex-column justify-content-center align-items-center m-4 ">
             <img src="${pageContext.request.contextPath}/assets/svg/${imgSidebar}" class="img_dashboard" alt="">
         </div>    
-        <div class="menu_option text-white list-unstyled">
-            <li class="nav-item  ">
-                <a class="nav-link text-white" href="${pageContext.request.contextPath}/asesores">Administrar Asesores</a>
+        <div class="menu_option text-white list-unstyled ">
+            <li class="nav-item button--fill">
+                <a class="nav-link text-white nav_hover" href="${pageContext.request.contextPath}/asesores">Administrar Asesores</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-white" href="${pageContext.request.contextPath}/clientes">Administrar Clientes</a>
+            <li class="nav-item button--fill">
+                <a class="nav-link text-white nav_hover" href="${pageContext.request.contextPath}/clientes">Administrar Clientes</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-white" href="${pageContext.request.contextPath}/citas">Administrar Citas</a>
+            <li class="nav-item button--fill">
+                <a class="nav-link text-white nav_hover" href="${pageContext.request.contextPath}/citas">Administrar Citas</a>
             </li>
         </div>
 
