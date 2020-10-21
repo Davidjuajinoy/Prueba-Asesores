@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-10-2020 a las 06:09:57
+-- Tiempo de generación: 21-10-2020 a las 04:28:33
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.4
 
@@ -29,14 +29,28 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `asesores` (
   `ase_id` int(11) NOT NULL,
-  `ase_nombre` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ase_numero_documento` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ase_experiencia` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ase_especialidad` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ase_hora_inicio` time DEFAULT NULL,
-  `ase_hora_fin` time DEFAULT NULL,
+  `ase_nombre` varchar(60) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ase_numero_documento` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ase_experiencia` decimal(10,0) DEFAULT NULL,
+  `ase_especialidad` varchar(160) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ase_hora_inicio` varchar(11) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ase_hora_fin` varchar(11) COLLATE utf8_unicode_ci DEFAULT NULL,
   `fk_ase_tipo_documento` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `asesores`
+--
+
+INSERT INTO `asesores` (`ase_id`, `ase_nombre`, `ase_numero_documento`, `ase_experiencia`, `ase_especialidad`, `ase_hora_inicio`, `ase_hora_fin`, `fk_ase_tipo_documento`) VALUES
+(1, 'andres hernandez juajinoy', '10324871', '2', 'consejero amoroso', '10:28', '17:03', 2),
+(4, 'dante zambrano pichin', '52478911', '9', 'perder el tiempo', '06:00', '18:01', 1),
+(5, 'elkin dorado', '1234567891', '4', 'En relaciones familiares', '14:27', '19:26', 1),
+(7, 'felipe rodriguez', '11111472', '2', 'Relaciones legales', '08:12', '18:12', 1),
+(8, 'jorge mendoza chacon', '14785264', '1', 'No se que poner :D', '06:00', '17:00', 1),
+(9, 'angie michel  zambrano', '14475420', '2', 'Asesoria Comercial', '18:00', '05:00', 1),
+(10, 'juan diego cubides', '1012416069', '1', 'Asesoria Fiscal', '13:17', '17:00', 1),
+(11, 'diego armando rojas', '14578126', '1', 'Procesos Fiscales', '20:00', '17:00', 1);
 
 -- --------------------------------------------------------
 
@@ -47,13 +61,24 @@ CREATE TABLE `asesores` (
 CREATE TABLE `citas` (
   `id_citas` int(11) NOT NULL,
   `descripcion` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `fecha` date DEFAULT NULL,
-  `hora_inicio` time DEFAULT NULL,
-  `hora_final` time DEFAULT NULL,
+  `fecha` varchar(11) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `hora_inicio` varchar(11) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `hora_final` varchar(11) COLLATE utf8_unicode_ci DEFAULT NULL,
   `fk_asesores` int(11) NOT NULL,
   `fk_clientes` int(11) NOT NULL,
   `fk_estado` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `citas`
+--
+
+INSERT INTO `citas` (`id_citas`, `descripcion`, `fecha`, `hora_inicio`, `hora_final`, `fk_asesores`, `fk_clientes`, `fk_estado`) VALUES
+(1, 'para cnada', '2020-10-20', '13:42', '16:42', 5, 18, 2),
+(3, 'procesos fiscales', '2020-10-21', '13:46', '13:46', 7, 25, 1),
+(4, 'relaciones publicas', '2020-10-30', '08:46', '14:46', 9, 20, 1),
+(5, 'asesoria comercial\n', '2020-10-29', '14:50', '16:50', 11, 3, 2),
+(6, 'para probar :d', '2020-10-22', '09:24', '15:24', 4, 26, 4);
 
 -- --------------------------------------------------------
 
@@ -107,7 +132,6 @@ INSERT INTO `clientes` (`cli_id`, `cli_nombres`, `cli_apellidos`, `cli_numero_do
 (9, 'sergio', 'garzon', '1000201456', '2020-10-19', 1, 1),
 (10, 'nasly', 'mora', '1234567891', '2020-10-19', 1, 1),
 (11, 'andres', 'gonzales', '12345789', '2020-10-19', 1, 1),
-(12, 'sandra', 'martinez', '52335378', '2020-10-19', 1, 2),
 (13, 'alvaro ', 'pineda', '13792114', '2020-10-19', 1, 1),
 (14, 'juliet', 'ortiz', '5478961242', '2020-10-19', 1, 2),
 (15, 'jorge', 'morales', '14567892', '2020-10-19', 1, 2),
@@ -115,12 +139,14 @@ INSERT INTO `clientes` (`cli_id`, `cli_nombres`, `cli_apellidos`, `cli_numero_do
 (17, 'andres', 'chacon', '78945611', '2020-10-19', 1, 2),
 (18, 'paula andrea ', 'camargo perez', '78945611', '2020-10-19', 1, 1),
 (19, 'diego', 'lopez', '1012468025', '2020-10-19', 1, 1),
-(20, 'elena', 'martinez juajinoy', '52336347', '2020-10-19', 2, 2),
+(20, 'elena', 'martinez juajinoy', '52336347', '2020-10-20', 2, 1),
 (21, 'kevin alberto', 'sanchez pedraza', '1478569124', '2020-10-19', 1, 2),
 (22, 'ezio sebastian', 'palermo fuentes', '14578992', '2020-10-19', 1, 1),
 (23, 'alexander', 'carrero fuentes', '58794151', '2020-10-19', 1, 1),
 (24, 'maria', 'quevedo', '52656841', '2020-10-19', 2, 1),
-(25, 'pepito', 'perez', '1234567891', '2020-10-19', 1, 1);
+(25, 'pepito', 'perez', '1234567891', '2020-10-19', 1, 1),
+(26, 'sandra elena', 'martinez', '1234567891', '2020-10-20', 2, 6),
+(27, 'juanito', 'alcachofa riveros', '1000323828', '2020-10-20', 1, 5);
 
 -- --------------------------------------------------------
 
@@ -132,6 +158,16 @@ CREATE TABLE `estado_cita` (
   `id_estado_cita` int(11) NOT NULL,
   `estado_cita` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `estado_cita`
+--
+
+INSERT INTO `estado_cita` (`id_estado_cita`, `estado_cita`) VALUES
+(1, 'Confirmada'),
+(2, 'Reservada'),
+(3, 'Atendidada'),
+(4, 'Cancelada');
 
 -- --------------------------------------------------------
 
@@ -236,13 +272,13 @@ ALTER TABLE `tipo_documento`
 -- AUTO_INCREMENT de la tabla `asesores`
 --
 ALTER TABLE `asesores`
-  MODIFY `ase_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ase_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `citas`
 --
 ALTER TABLE `citas`
-  MODIFY `id_citas` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_citas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `ciudades`
@@ -254,13 +290,13 @@ ALTER TABLE `ciudades`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `cli_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `cli_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `estado_cita`
 --
 ALTER TABLE `estado_cita`
-  MODIFY `id_estado_cita` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_estado_cita` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `paises`
